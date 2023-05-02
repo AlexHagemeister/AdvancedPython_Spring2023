@@ -1,0 +1,50 @@
+AL,Skittles,105263,Starburst,101928,Hershey's Mini Bars,93728
+AK,Sour Patch Kids,4873,Twix,4673,Milky Way,3982
+AZ,Hershey Kisses,779828,Hot Tamales,775022,Snickers,712387
+AR,Butterfinger,201837,Jolly Ranchers,198276,M&M's,102837
+CA,Reese's Cups,1231675,M&M's,1219928,Skittles,1157821
+CO,Hershey Kisses,120982,Twix,118372,Milky Way,102843
+CT,Almond Joy,2981,Milky Way,2371,M&M's,2003
+DE,Sour Patch Kids,20083,Skittles,16728,Life Savers,11292
+FL,Reese's Cups,687288,Skittles,580002,Hot Tamales,401928
+GA,Swedish Fish,138928,Jolly Ranchers,113281,Reese's Cups,92837
+HI,Hershey's Mini Bars,26771,Skittles,25611,Butterfinger,21897
+ID,Snickers,83648,Starburst,65728,Candy Corn,42998
+IL,Sour Patch Kids,152928,Kit Kat,135672,Starburst,120928
+IN,Starburst,92811,Hot Tamales,91928,Jolly Ranchers,72901
+IA,M&M's,65779,Reese's Cups,57821,Hershey's Mini Bars,51729
+KS,M&M's,211098,Reese's Cups,205637,Sour Patch Kids,197882
+KY,Reese's Cups,67901,Hot Tamales,55219,Swedish Fish,38726
+LA,Lemonheads,109826,Reese's Cups,102827,Blow Pops,90827
+ME,Sour Patch Kids,57829,Starburst,48982,Candy Corn,13927
+MD,Hershey Kisses,36718,Hershey's Mini Bars,35928,Reese's Cups,29837
+MA,Sour Patch Kids,69697,Butterfinger,67827,Dubble Bubble Gum,48921
+MI,Starburst,108928,Candy Corn,106527,Butterfinger,98726
+MN,Hot Tamales,175726,Tootsie Pops,167844,Skittles,144672
+MS,3 Musketeers,91820,Snickers,88926,Butterfinger,81762
+MO,Milky Way,45281,Almond Joy,41902,Hot Tamales,39092
+MT,Twix,29833,M&M's,28981,Dubble Bubble Gum,23842
+NE,Sour Patch Kids,89281,Salt Water Taffy,83128,Twix,41828
+NV,Hot Tamales,287363,Hershey's Mini Bars,267819,Hershey Kisses,219891
+NH,M&M's,68993,Starburst,61992,Jolly Ranchers,40822
+NJ,Tootsie Pops,145726,M&M's,142872,Skittles,139821
+NM,Hershey's Mini Bars,80726,Jolly Ranchers,70927,Candy Corn,52729
+NY,Sour Patch Kids,136729,Hot Tamales,132891,Candy Corn,80928
+NC,Reese's Cups,82019,Snickers,79281,M&M's,78291
+ND,Hot Tamales,59872,Jolly Ranchers,57281,Candy Corn,42871
+OH,M&M's,154231,Blow Pops,153788,Starburst,141756
+OK,Skittles,20091,Dubble Bubble Gum,18726,Snickers,13827
+OR,M&M's,81982,Reese's Cups,76829,Candy Corn,62803
+PA,Hershey's Mini Bars,239081,M&M's,225783,Skittles,201736
+RI,Twix,14987,M&M's,14092,Candy Corn,11928
+SC,Butterfinger,111984,Skittles,104827,Candy Corn,86782
+SD,Jolly Ranchers,24128,Starburst,21827,Candy Corn,15827
+TN,Tootsie Pops,56123,Salt Water Taffy,50983,Skittles,42827
+TX,Starburst,902918,Reese's Cups,889827,Sour Patch Kids,690987
+UT,Tootsie Pops,403727,Candy Corn,318772,M&M's,241726
+VT,M&M's,36543,Skittles,28938,Milky Way,19928
+VA,Hot Tamales,153729,Snickers,151728,Tootsie Pops,123674
+WA,Tootsie Pops,167289,Salt Water Taffy,120982,M&M's,113728
+WV,Blow Pops,38772,Hershey's Mini Bars,36279,Hot Tamales,30988
+WI,Butterfinger,104829,Starburst,102981,Hot Tamales,89635
+WY,Reese's Cups,23978,Salt Water Taffy,22503,Dubble Bubble Gum,18782

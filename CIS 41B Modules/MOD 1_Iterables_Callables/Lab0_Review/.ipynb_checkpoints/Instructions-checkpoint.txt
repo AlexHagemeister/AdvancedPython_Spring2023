@@ -1,0 +1,58 @@
+CIS 41B – Lab 0: Review CIS 41A concepts
+
+Write a program that works with the population census of cities of Santa Clara County.
+
+Input fileThe input file is cities.csv (source). Each line of the file is data for 1 city in Santa Clara.
+Each line is in the format:  city name, 2000 census population, 2010 census population, 2020 census population
+
+Lab requirement
+Start with the file lab0.py, which already has code to create a class named Cities and code to call the printYear method to print the population of each city in a certain year. The code in main should work as is, you should not have to change it or add to it.
+
+Add the Cities class such that it will read in data from the input file and provide the printYear method.The file should be read in one time only (don’t keep reading the file).
+
+Add exception handing to end the program if the input file can’t be opened successfully.
+
+When printing the year, use formatting so that there are 2 columns of output:   city name     populationAs an optional extra challenge, don’t use an if statement in the printYear method. There’s a more efficient way.
+ 
+Add a docstring for the Cities class and for the public method printYear.
+
+Expected output when the code in main runs:
+Year 2020
+Campbell          44080
+Cupertino         60575
+Gilroy            59669
+Los Altos         31706
+Los Altos Hills    8540
+Los Gatos         33587
+Milpitas          80275
+Monte Sereno       3498
+Morgan Hill       45558
+Mountain View     82592
+Palo Alto         68724
+San Jose        1014545
+Santa Clara      127452
+Saratoga          31164
+Sunnyvale        156291
+
+Year 2000
+Campbell          40224
+Cupertino         52656
+Gilroy            41229
+Los Altos         28063
+Los Altos Hills    8474
+Los Gatos         29848
+Milpitas          62679
+Monte Sereno       3464
+Morgan Hill       33731
+Mountain View     71255
+Palo Alto         58623
+San Jose         903937
+Santa Clara      102670
+Saratoga          29993
+Sunnyvale        130873
+
+Year 10
+10 is not a valid census year
+
+Year a
+a is not a valid census year
