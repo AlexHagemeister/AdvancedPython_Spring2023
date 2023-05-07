@@ -78,13 +78,21 @@ import numpy as np
 class Tuition:
     def __init__(self, costs_file, states_file, years_file):
         self.costs = pd.read_csv(costs_file, header=0).iloc[:, 1:]  # remove Alaska
-        self.states = pd.read_csv(states_file, header=None)[0].iloc[1:].tolist()  # remove Alaska
-        self.years = pd.read_csv(years_file, header=None)[0].str.split('-').str[0].tolist()
+        self.states = (
+            pd.read_csv(states_file, header=None)[0].iloc[1:].tolist()
+        )  # remove Alaska
+        self.years = (
+            pd.read_csv(years_file, header=None)[0].str.split("-").str[0].tolist()
+        )
 
     def get_current_tuition_stats(self):
         tuition_2022 = self.costs.iloc[:, -1]
-        return [int(round(tuition_2022.min())), int(round(tuition_2022.max())), int(round(tuition_2022.mean())),
-                int(round(tuition_2022.median()))]
+        return [
+            int(round(tuition_2022.min())),
+            int(round(tuition_2022.max())),
+            int(round(tuition_2022.mean())),
+            int(round(tuition_2022.median())),
+        ]
 
     def plot_tuition_distribution(self):
         tuition_2022 = self.costs.iloc[:, -1]
@@ -99,12 +107,16 @@ class Tuition:
     def plot_lowest_tuition_states(self, n_states):
         tuition_2022 = self.costs.iloc[:, -1]
         lowest_tuition_states = tuition_2022.nsmallest(n_states)
-        lowest_tuition_states_names = self.costs.iloc[lowest_tuition_states.index].index.tolist()
+        lowest_tuition_states_names = self.costs.iloc[
+            lowest_tuition_states.index
+        ].index.tolist()
         plt.bar(lowest_tuition_states_names, lowest_tuition_states)
-        plt.title(f"Tuition for the {n_states} States with the Lowest Tuition in 2022-23")
+        plt.title(
+            f"Tuition for the {n_states} States with the Lowest Tuition in 2022-23"
+        )
         plt.xlabel("State")
         plt.ylabel("Tuition")
-        plt.xticks(rotation=45, ha='right')
+        plt.xticks(rotation=45, ha="right")
         plt.show()
         return self.states[tuition_2022.idxmin()]
 
@@ -113,8 +125,18 @@ class Tuition:
         largest_increase_states = tuition_diff.sum().nlargest(5).index.tolist()
         smallest_increase_state = tuition_diff.sum().nsmallest(1).index[0]
         for state in largest_increase_states:
-            plt.plot(self.years, self.costs.loc[self.states.index(state), :], label=state, marker='o')
-        plt.plot(self.years, self.costs.loc[self.states.index(smallest_increase_state), :], label=smallest_increase_state, marker='s')
+            plt.plot(
+                self.years,
+                self.costs.loc[self.states.index(state), :],
+                label=state,
+                marker="o",
+            )
+        plt.plot(
+            self.years,
+            self.costs.loc[self.states.index(smallest_increase_state), :],
+            label=smallest_increase_state,
+            marker="s",
+        )
         plt.title("Tuition Trend from First to Last Available Years")
         plt.xlabel("Year")
         plt.ylabel("Tuition")

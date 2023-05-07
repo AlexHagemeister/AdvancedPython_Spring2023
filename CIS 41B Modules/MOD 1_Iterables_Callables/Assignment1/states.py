@@ -19,7 +19,7 @@ import logging
 
 class States:
     """Class to store state population data, and provide methods to look up the data"""
-
+ 
     def log_function_call(func):
         """A decorator that prints the name of the function that it decorates to a log file."""
 

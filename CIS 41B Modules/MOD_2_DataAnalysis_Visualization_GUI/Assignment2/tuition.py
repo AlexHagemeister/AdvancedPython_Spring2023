@@ -74,15 +74,19 @@ import matplotlib.pyplot as plt
 import numpy as np
 import csv
 
+
 def print_return_value(func):
     """
     Decorator function to print the return value of the decorated function.
     """
+
     def wrapper(*args, **kwargs):
         result = func(*args, **kwargs)
         print(f"Return value: {result}")
         return result
+
     return wrapper
+
 
 class Tuition:
     """
@@ -95,31 +99,33 @@ class Tuition:
     YEARS_FILE = "years.csv"
 
     def __init__(self, costs_file=COSTS_FILE, states_file=STATES_FILE, years_file=YEARS_FILE):
-       # Read data from the 3 input files and store them as numpy arrays using the read_data method
-       self._costs, self._states, self._years = self.read_data(costs_file, states_file, years_file) 
-    
+        # Read data from the 3 input files and store them as numpy arrays using the read_data method
+        self._costs, self._states, self._years = self.read_data(costs_file, states_file, years_file)
 
     def read_data(self, costs_file=COSTS_FILE, states_file=STATES_FILE, years_file=YEARS_FILE):
-            """
-            Reads data from the costs.csv, states.csv, and years.csv files.
-            Returns the data as numpy arrays.
-            """
-            # Read costs data and remove Alaska (row with index 1)
-            with open(costs_file) as cost_f:
-                costs = list(csv.reader(cost_f))
-                costs.pop(1)
+        """
+        Reads data from the costs.csv, states.csv, and years.csv files.
+        Returns the data as numpy arrays.
+        """
+        # Load costs data (as float type by default)
+        alaska_idx = 1
+        costs = np.loadtxt(costs_file, delimiter=",")
 
-            # Read states data and remove Alaska (row with index 1)
-            with open(states_file) as states_f:
-                states = list(csv.reader(states_f))
-                states.pop(1)
+        # create array of indeces of rows where all costs are not equal to 0
+        nonzero_idx_arr = np.where(costs[:, 0] != 0)
+        # ALT: nonzero_idx_arr = np.nonzero(costs[:, 0])
 
-            # Read years data and store only the first year from each string
-            with open(years_file) as years_f:
-                years = [year.split('-')[0] for year in csv.reader(years_f).__next__()]
+        costs_view = costs[nonzero_idx_arr]
 
-            return np.array(costs, dtype=int), np.array(states).flatten(), np.array(years, dtype=int)
-    
+        # Load states data (state names, string type)
+        states = np.loadtxt(states_file, delimiter=",", dtype=str)
+        states_view = states[nonzero_idx_arr]
+
+        # Read years data (data is all on one line)
+        # with open(years_file, "r") as y_file:
+        #     years = np.array([int(year[:4]) for year in (y_file.readline().strip().split(","))])
+        years = np.loadtxt(years_file, delimiter=",", dtype=int, converters=lambda date_str: int(date_str[:4]))
+        return costs_view, states_view, years
 
     @print_return_value
     def plot_distribution(self):
@@ -128,7 +134,7 @@ class Tuition:
         Returns the number of states being plotted.
         """
         plt.figure()
-        plt.hist(self._costs[:, -1], bins=15)
+        plt.hist(self._costs[:, -1], bins=10)
         plt.title("Tuition Distribution for 2022-23")
         plt.xlabel("Tuition")
         plt.ylabel("Number of States")
@@ -141,6 +147,7 @@ class Tuition:
         Plots the tuition rates for the specified number of states with the lowest tuition rates.
         Returns the name of the state with the lowest tuition rate.
         """
+        # argsort returns the indices that would sort an array
         lowest_states = np.argsort(self._costs[:, -1])[:num_states]
         sorted_tuition = self._costs[lowest_states, -1]
         sorted_states = self._states[lowest_states]
@@ -160,20 +167,32 @@ class Tuition:
         Plots the tuition trends for the 5 states with the largest tuition increases and the state with the smallest tuition increase.
         Returns the name of the state with the largest tuition increase.
         """
+        # Calculate the difference between the first and last tuition rates for each state
         tuition_diff = self._costs[:, -1] - self._costs[:, 0]
+
+        # get the index of the 5 largest increases and the smallest increase
         largest_increase_idx = np.argsort(tuition_diff)[-5:]
         smallest_increase_idx = np.argmin(tuition_diff)
 
+        # NOTE: for thing in sorted(thing) tuition_diff.sort()
+
         plt.figure()
         for idx in largest_increase_idx:
-            plt.plot(self._years, self._costs[idx], marker='o', label=self._states[idx])
+            plt.plot(self._years, self._costs[idx], marker="o", label=self._states[idx])
 
-        plt.plot(self._years, self._costs[smallest_increase_idx], marker='s', label=self._states[smallest_increase_idx], linestyle='--')
+        plt.plot(
+            self._years,
+            self._costs[smallest_increase_idx],
+            marker="s",
+            label=self._states[smallest_increase_idx],
+            linestyle="--",
+        )
         plt.title("Tuition Trends for States with Largest Increases and Smallest Increase")
         plt.xlabel("Year")
         plt.ylabel("Tuition")
         plt.legend()
         plt.show()
+
         return self._states[largest_increase_idx[0]]
 
     @print_return_value
@@ -188,12 +207,23 @@ class Tuition:
         mean_tuition = np.mean(current_tuition)
         median_tuition = np.median(current_tuition)
 
-        return round(min_tuition), round(max_tuition), round(mean_tuition), round(median_tuition)
-    
+        return (
+            round(min_tuition),
+            round(max_tuition),
+            round(mean_tuition),
+            round(median_tuition),
+        )
+
+
 # Test code
-if __name__ == "__main__":
+def main():
     tuition = Tuition()
     tuition.plot_distribution()
     tuition.plot_lowest_tuition(5)
-    tuition.plot_tuition_trends()
     tuition.tuition_statistics()
+    tuition.plot_tuition_trends()
+
+
+if __name__ == "__main__":
+    main()
+    # tuition = Tuition()
