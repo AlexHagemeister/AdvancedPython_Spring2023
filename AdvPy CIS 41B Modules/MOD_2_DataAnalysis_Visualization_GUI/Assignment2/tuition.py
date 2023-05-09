@@ -1,3 +1,4 @@
+
 """
 Alex Hagemeister
 Lab 2: numpy, matplotlib, and tkinter
@@ -115,12 +116,9 @@ class Tuition:
         # ALTERNATE VERSION:
         # nonzero_idx_arr = np.where(costs[:, 0] != 0)
 
-        ## Assign a view of the costs array with only the rows where all costs are not equal to 0
-        costs_view = costs[nonzero_idx_arr]
 
         ## Load states data and likewise assign a label to the view
         states = np.loadtxt(states_file, delimiter=",", dtype=str)
-        states_view = states[nonzero_idx_arr]
 
         ## Read years data (all on one line)
         # uses a lambda function to get only the first 4 characters of each year and convert to int
@@ -129,7 +127,7 @@ class Tuition:
         # with open(years_file, "r") as y_file:
         #     years = np.array([int(year[:4]) for year in (y_file.readline().strip().split(","))])
 
-        return costs_view, states_view, years
+        return costs[nonzero_idx_arr], states[nonzero_idx_arr], years
 
     @print_return_value
     def plot_distribution(self):
@@ -137,13 +135,13 @@ class Tuition:
         Plots the distribution of tuition rates for the most recent year (2022-23).
         Returns the number of states being plotted.
         """
-        plt.figure()
+        # plt.figure()
         plt.hist(self._costs[:, -1])
         plt.title("Tuition Distribution for 2022-23", fontsize=24)
         plt.xlabel("Tuition Cost", fontsize=18)
         plt.xticks(rotation=45)
         plt.ylabel("Number of States", fontsize=18)
-        plt.show()
+        # plt.show()
         return len(self._states)
 
     @print_return_value
@@ -157,13 +155,13 @@ class Tuition:
         sorted_tuition = self._costs[lowest_states, -1]
         sorted_states = self._states[lowest_states]
 
-        plt.figure()
+        # plt.figure()
         plt.bar(sorted_states, sorted_tuition)
         plt.title(f"Lowest {num_states} Tuition Rates \n for 2022-23 By State", fontsize=24)
         plt.xlabel("State", fontsize=18)
         plt.ylabel("Tuition Cost", fontsize=18)
         plt.xticks(rotation=45)
-        plt.show()
+        # plt.show()
         return sorted_states[0]
 
     @print_return_value
@@ -181,7 +179,7 @@ class Tuition:
 
         # NOTE: for thing in sorted(thing) tuition_diff.sort()
 
-        plt.figure()
+        # plt.figure()
         for idx in largest_increase_idx:
             plt.plot(self._years, self._costs[idx], marker="o", label=self._states[idx])
 
@@ -197,7 +195,7 @@ class Tuition:
         plt.xticks(self._years, rotation=45)
         plt.ylabel("Tuition Cost", fontsize=18)
         plt.legend()
-        plt.show()
+        # plt.show()
 
         return self._states[largest_increase_idx[0]]
 

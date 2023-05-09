@@ -66,9 +66,8 @@ import matplotlib
 
 matplotlib.use("TkAgg")
 import tkinter.messagebox as tkmb
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg  # Canvas widget
-import matplotlib.pyplot as plt  # normal import of pyplot to plot
-from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import matplotlib.pyplot as plt
 from tuition import Tuition
 
 
@@ -79,21 +78,27 @@ class MainWindow(tk.Tk):
 
         self.title("Tuition Analysis")
         self.geometry("450x200")
-        self.tuition = Tuition()
+        try:
+            self.tuition = Tuition()
+        except FileNotFoundError as e:
+            tkmb.showerror("File Open Error", str(e), parent=self)
+            self.destroy()
+            raise SystemExit
 
         ## Create the widgets for the main window
 
         # create the label for the purpose of the application
-        tk.Label(self, text="Select a tuition analysis option:").grid(row=0, column=0, columnspan=3, sticky=tk.W)
+        purpose_label = tk.Label(self, text="Yearly College Tuition", font=("Helvetica", 16))
+        purpose_label.grid(row=0, column=1, columnspan=3, sticky=tk.W)
 
         # get the statistics from the Tuition object to display as labels
         min_tuition, max_tuition, mean_tuition, median_tuition = self.tuition.tuition_statistics()
 
         # create labels for the statistics
-        tk.Label(self, text=f"Lowest tuition: ${min_tuition}").grid(row=2, column=0, sticky=tk.W)
-        tk.Label(self, text=f"Highest tuition: ${max_tuition}").grid(row=2, column=1, sticky=tk.W)
-        tk.Label(self, text=f"Mean tuition: ${mean_tuition}").grid(row=3, column=0, sticky=tk.W)
-        tk.Label(self, text=f"Median tuition: ${median_tuition}").grid(row=3, column=1, sticky=tk.W)
+        tk.Label(self, text=f"Lowest tuition: ${min_tuition}").grid(row=2, column=0)
+        tk.Label(self, text=f"Highest tuition: ${max_tuition}").grid(row=2, column=2)
+        tk.Label(self, text=f"Mean tuition: ${mean_tuition}").grid(row=3, column=0)
+        tk.Label(self, text=f"Median tuition: ${median_tuition}").grid(row=3, column=2)
 
         # Create buttons and their commands
         btn_overview = tk.Button(
@@ -118,31 +123,34 @@ class PlotWindow(tk.Toplevel):
         self.title("Tuition Plot")
         self.geometry("600x400")
 
-        fig = Figure(figsize=(6, 4), dpi=100)
+        fig = plt.figure(figsize=(6, 4), dpi=100)
         plot_func(*args)
 
         canvas = FigureCanvasTkAgg(fig, master=self)
-        canvas.draw()
         canvas.get_tk_widget().grid(row=0, column=0)
+        canvas.draw()
 
 
 class DialogWindow(tk.Toplevel):
     def __init__(self, parent, plot_func):
         super().__init__(parent)
-        self.geometry("200x200")
+        self.geometry("200x300")
         self.parent = parent
         self.plot_func = plot_func
         self.title("Select Number of States")
 
+        purpose_label = tk.Label(self, text="Select Number of States:", font=("Helvetica", 16))
+        purpose_label.grid(row=0, column=0)
+
         self.num_var = tk.IntVar()
         self.num_var.set(5)
 
-        tk.Radiobutton(self, text="5", variable=self.num_var, value=5).grid(row=0, column=0, sticky=tk.W)
-        tk.Radiobutton(self, text="10", variable=self.num_var, value=10).grid(row=1, column=0, sticky=tk.W)
-        tk.Radiobutton(self, text="15", variable=self.num_var, value=15).grid(row=2, column=0, sticky=tk.W)
-        tk.Radiobutton(self, text="20", variable=self.num_var, value=20).grid(row=3, column=0, sticky=tk.W)
+        tk.Radiobutton(self, text="5", variable=self.num_var, value=5).grid(row=1, column=0)
+        tk.Radiobutton(self, text="10", variable=self.num_var, value=10).grid(row=2, column=0)
+        tk.Radiobutton(self, text="15", variable=self.num_var, value=15).grid(row=3, column=0)
+        tk.Radiobutton(self, text="20", variable=self.num_var, value=20).grid(row=4, column=0)
 
-        tk.Button(self, text="Select", command=self.select).grid(row=4, column=0, sticky=tk.W)
+        tk.Button(self, text="Select", command=self.select).grid(row=5, column=0)
 
         self.protocol("WM_DELETE_WINDOW", self.close)
 
