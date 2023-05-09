@@ -107,24 +107,29 @@ class Tuition:
         Reads data from the costs.csv, states.csv, and years.csv files.
         Returns the data as numpy arrays.
         """
-        # Load costs data (as float type by default)
-        alaska_idx = 1
+
+        ## Load costs data (as float type by default)
         costs = np.loadtxt(costs_file, delimiter=",")
 
-        # create array of indeces of rows where all costs are not equal to 0
+        ## create array of indeces of rows where all costs are not equal to 0
         nonzero_idx_arr = np.where(costs[:, 0] != 0)
-        # ALT: nonzero_idx_arr = np.nonzero(costs[:, 0])
+        # ALTERNATE VERSION:
+        # nonzero_idx_arr = np.nonzero(costs[:, 0])
 
+        ## Assign a view of the costs array with only the rows where all costs are not equal to 0
         costs_view = costs[nonzero_idx_arr]
 
-        # Load states data (state names, string type)
+        ## Load states data and likewise assign a label to the view
         states = np.loadtxt(states_file, delimiter=",", dtype=str)
         states_view = states[nonzero_idx_arr]
 
-        # Read years data (data is all on one line)
+        ## Read years data (all on one line)
+        # uses a lambda function to get only the first 4 characters of each year and convert to int
+        years = np.loadtxt(years_file, delimiter=",", dtype=int, converters=lambda date_str: int(date_str[:4]))
+        # ALTERNATE VERSION:
         # with open(years_file, "r") as y_file:
         #     years = np.array([int(year[:4]) for year in (y_file.readline().strip().split(","))])
-        years = np.loadtxt(years_file, delimiter=",", dtype=int, converters=lambda date_str: int(date_str[:4]))
+
         return costs_view, states_view, years
 
     @print_return_value
@@ -215,15 +220,10 @@ class Tuition:
         )
 
 
-# Test code
-def main():
+if __name__ == "__main__":
+    # main()
     tuition = Tuition()
     tuition.plot_distribution()
     tuition.plot_lowest_tuition(5)
     tuition.tuition_statistics()
     tuition.plot_tuition_trends()
-
-
-if __name__ == "__main__":
-    main()
-    # tuition = Tuition()
