@@ -2,62 +2,24 @@
 Alex Hagemeister
 Lab 2: numpy, matplotlib, and tkinter
 CIS 41B, Spring 2023
+FILE: gui.py
 
-gui.py
+This script is a graphical user interface (GUI) for analyzing college tuition data. 
 
-This file contains 3 classes: a main window class, a dialog window class, and a plot window class. Each of the 3 window
-classes is derived from an appropriate tkinter class.
+It uses the tkinter library for the GUI and matplotlib for plotting the data. 
+The script imports tuition data from the Tuition class, which is defined in a separate file called 'tuition.py'. 
+The main window displays statistics of the tuition data, such as the lowest, highest, mean, and median tuition costs. 
 
+There are three buttons to create different plots: 
+    an overview plot of the distribution of tuition costs, 
+    a plot for the lowest tuition costs, 
+    and a plot for the largest change in tuition costs. 
 
-1. The main window is an object of the main window class, and it appears when the app first comes up.
-    • The window has a title, a line of text to explain the purpose of the application, 3 buttons, and the 4 statistics
-    about the most current tuition.
-    • The 3 buttons are for the user to choose: the overview tuition rates, the N lowest tuitions and states, or the 5
-    largest changes and 1 smallest change in tuition and their states.
-    • The buttons are placed side by side.
-    • The 4 statistics are displayed 2 per line, with $ in front of the tuition value.
-    • When the user clicks on the ‘Overview’ button or 'Largest Change' button: the main window creates a plot
-    window with the appropriate plot.
-    • When the user clicks on the ‘Lowest Cost’ button, the main window creates a dialog window to ask the user for
-    a choice of number of states to be displayed. When the user selects a choice, the dialog window closes and the
-    main window creates the plot window with the appropriate plot.
-    • When the user clicks X to close the main window, all other windows of the app should close.
+The lowest tuition costs plot allows users to select the number of states to include in the plot. 
 
-2. The plot window is an object of the plot window class. The plot window is created by the main window:
-    • The plot window must be a tkinter window that works with matplotlib, and not an independent matplotlib
-    window.
-    • There should be one plot window class that can display all 3 plots of the Tuition class. Do not create different
-    plot window classes.
-    • The user can click X to close the plot window, or the user can leave the window open and go to the main
-    window to select another choice. This means there can be multiple plot windows opened if the user chooses to
-    keep them open.   
-
-
-3. The dialog window is an object of the dialog window class. The window is created by the main window when the
-user selects the ‘Largest Change’ button.
-
-    • The window has a radio button for the 4 number choices that the user has.
-    • The buttons should be lined up on the left of the window, and the first button is selected by default.
-    • There is a button that the user clicks to lock in their number choice.
-    • When the dialog window opens, all other windows should be disabled so that the user cannot use the main window 
-    to select another choice.
-    • The user has 2 options with the dialog window:
-        - click the button to lock in the radio button choice
-        - click X to close the dialog window and not select a choice
-
-Interaction between the main window and the dialog window:
-    • If the user clicks the button to lock in their selection, then the dialog window closes, and the main window can
-    get the user's number choice of N. Based on the user's choice, the main window creates a plot window with N
-    lowest tuition rates and their states.
-    Note that the dialog window should not create the plot window. The dialog window's job is to dialog with the
-    user to get the user's choice. The processing of the user's choice is the job of the main window object.
-    • If the user clicks X on the dialog window, then dialog window closes and no plot window appears. The user can
-    then go to the main window to make another selection. 
-
-Exception handling
-    • During GUI start up, data will be read in from the 3 input files. If a file open is not successful, a messagebox
-    window lets the user know that there is a file open error, with the specific file name.
-    • When the user closes the messagebox window, the main window closes and the application terminates.
+Exception handling: 
+    If file errors occur when reading the tuition data an appropriate error message is displayed. 
+    If the user closes the main window, the program exits.
 
 """
 
@@ -75,9 +37,9 @@ class MainWindow(tk.Tk):
     def __init__(self):
         # call the parent class constructor
         super().__init__()
-
-        self.title("Tuition Analysis")
-        self.geometry("450x200")
+        self.title("Tuition Cost Analysis Program")
+        # Try to create the Tuition object. If there is a file open error,
+        # display the error and exit the program.
         try:
             self.tuition = Tuition()
         except FileNotFoundError as e:
@@ -85,46 +47,54 @@ class MainWindow(tk.Tk):
             self.destroy()
             raise SystemExit
 
-        ## Create the widgets for the main window
+        ###### Create the widgets for the main windown ######
 
         # create the label for the purpose of the application
-        purpose_label = tk.Label(self, text="Yearly College Tuition", font=("Helvetica", 16))
-        purpose_label.grid(row=0, column=1, columnspan=3, sticky=tk.W)
+        purpose_label = tk.Label(self, text="Yearly College Tuition", fg="blue", font=("Helvetica", 20))
+        purpose_label.grid(row=0, column=0, columnspan=3, sticky="we")
 
         # get the statistics from the Tuition object to display as labels
         min_tuition, max_tuition, mean_tuition, median_tuition = self.tuition.tuition_statistics()
 
         # create labels for the statistics
-        tk.Label(self, text=f"Lowest tuition: ${min_tuition}").grid(row=2, column=0)
-        tk.Label(self, text=f"Highest tuition: ${max_tuition}").grid(row=2, column=2)
-        tk.Label(self, text=f"Mean tuition: ${mean_tuition}").grid(row=3, column=0)
-        tk.Label(self, text=f"Median tuition: ${median_tuition}").grid(row=3, column=2)
+        cell_padding = 20
+        tk.Label(self, text=f"Lowest tuition: ${min_tuition}", fg="green").grid(
+            row=2, column=0, columnspan=2, sticky="w", padx=cell_padding, pady=4
+        )
+        tk.Label(self, text=f"Highest tuition: ${max_tuition}", fg="green").grid(
+            row=2, column=1, columnspan=2, sticky="e", padx=cell_padding, pady=4
+        )
+        tk.Label(self, text=f"Mean tuition: ${mean_tuition}", fg="green").grid(
+            row=3, column=0, columnspan=2, sticky="w", padx=cell_padding, pady=4
+        )
+        tk.Label(self, text=f"Median tuition: ${median_tuition}", fg="green").grid(
+            row=3, column=1, columnspan=2, sticky="e", padx=cell_padding, pady=4
+        )
 
-        # Create buttons and their commands
+        # Create buttons and their commands (passing references to appropriate functions)
         btn_overview = tk.Button(
             self, text="Overview", command=lambda: PlotWindow(self, self.tuition.plot_distribution)
         )
-        btn_overview.grid(row=1, column=0)
+        btn_overview.grid(row=1, column=0, pady=cell_padding)
 
         btn_lowest_cost = tk.Button(
             self, text="Lowest Cost", command=lambda: DialogWindow(self, self.tuition.plot_lowest_tuition)
         )
-        btn_lowest_cost.grid(row=1, column=1)
+        btn_lowest_cost.grid(row=1, column=1, pady=cell_padding)
 
         btn_largest_change = tk.Button(
             self, text="Largest Change", command=lambda: PlotWindow(self, self.tuition.plot_tuition_trends)
         )
-        btn_largest_change.grid(row=1, column=2)
+        btn_largest_change.grid(row=1, column=2, pady=cell_padding)
 
 
 class PlotWindow(tk.Toplevel):
-    def __init__(self, parent, plot_func, *args):
+    def __init__(self, parent, plot_func, *args, **kwargs):
         super().__init__(parent)
         self.title("Tuition Plot")
-        self.geometry("600x400")
 
         fig = plt.figure(figsize=(6, 4), dpi=100)
-        plot_func(*args)
+        plot_func(*args, **kwargs)
 
         canvas = FigureCanvasTkAgg(fig, master=self)
         canvas.get_tk_widget().grid(row=0, column=0)
@@ -134,7 +104,6 @@ class PlotWindow(tk.Toplevel):
 class DialogWindow(tk.Toplevel):
     def __init__(self, parent, plot_func):
         super().__init__(parent)
-        self.geometry("200x300")
         self.parent = parent
         self.plot_func = plot_func
         self.title("Select Number of States")
@@ -160,9 +129,10 @@ class DialogWindow(tk.Toplevel):
 
     def close(self):
         self.destroy()
+        self.quit()
 
 
 if __name__ == "__main__":
-    # create the main window object
-    main_window = MainWindow()
-    main_window.mainloop()
+    # main_window = MainWindow()
+    # main_window.mainloop()
+    main_window = MainWindow().mainloop()
